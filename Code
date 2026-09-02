@@ -94,3 +94,23 @@ def main():
     )
  
    
+ # Step 3: Train the model
+    model = train_model(X_train, y_train)
+ 
+    # Step 4: Check how accurate the model is
+    accuracy = evaluate_model(model, X_test, y_test)
+    print(f"Model accuracy on test data: {accuracy * 100:.2f}%")
+ 
+    # Step 5: Let the user try their own flower measurements
+    while True:
+        predict_new_flower(model, data.target_names)
+        again = input("\nTry another flower? (y/n): ").strip().lower()
+        if again != "y":
+            break
+ 
+    print("Thanks for using the Iris Flower Classifier!")
+ 
+ 
+if __name__ == "__main__":
+    main()
+ 
