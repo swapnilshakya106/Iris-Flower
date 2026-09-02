@@ -1,0 +1,96 @@
+"""
+Iris Flower Classifier
+-----------------------
+A beginner Machine Learning project that trains a model to recognize
+the species of an Iris flower based on its measurements.
+ 
+What it does:
+1. Loads the famous Iris dataset (comes built into scikit-learn).
+2. Splits the data into a training set and a testing set.
+3. Trains a simple ML model (K-Nearest Neighbors) on the training data.
+4. Tests how accurate the model is on data it has never seen.
+5. Lets you predict the species of a new flower by entering measurements.
+ 
+Concepts used:
+- Loading a dataset
+- Train/test split
+- Training a classification model
+- Measuring accuracy
+- Making predictions on new data
+ 
+Library needed: scikit-learn
+Install it with: pip install scikit-learn
+"""
+ 
+from sklearn.datasets import load_iris
+from sklearn.model_selection import train_test_split
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.metrics import accuracy_score
+ 
+ 
+def load_data():
+    """
+    Loads the Iris dataset.
+    - data.data   -> the measurements (features): sepal length, sepal width,
+                      petal length, petal width
+    - data.target -> the species (labels): 0 = setosa, 1 = versicolor, 2 = virginica
+    """
+    data = load_iris()
+    return data
+ 
+ 
+def train_model(X_train, y_train):
+    """
+    Creates and trains a K-Nearest Neighbors (KNN) classifier.
+ 
+    KNN works by looking at the "k" closest known flowers to a new flower's
+    measurements, and picking the species that appears most often among them.
+    Here we use k = 3.
+    """
+    model = KNeighborsClassifier(n_neighbors=3)
+    model.fit(X_train, y_train)
+    return model
+ 
+ 
+def evaluate_model(model, X_test, y_test):
+    """
+    Uses the trained model to predict species for the test data,
+    then compares those predictions to the real answers to get an accuracy score.
+    """
+    predictions = model.predict(X_test)
+    accuracy = accuracy_score(y_test, predictions)
+    return accuracy
+ 
+ 
+def predict_new_flower(model, target_names):
+    """
+    Asks the user to enter measurements for a new flower,
+    then uses the trained model to predict its species.
+    """
+    print("\nEnter the flower's measurements (in cm):")
+    sepal_length = float(input("Sepal length: "))
+    sepal_width = float(input("Sepal width: "))
+    petal_length = float(input("Petal length: "))
+    petal_width = float(input("Petal width: "))
+ 
+    # The model expects a 2D list: [[value1, value2, value3, value4]]
+    new_flower = [[sepal_length, sepal_width, petal_length, petal_width]]
+    prediction = model.predict(new_flower)
+ 
+    # prediction[0] is a number (0, 1, or 2); target_names converts it to a name
+    predicted_species = target_names[prediction[0]]
+    print(f"Predicted species: {predicted_species}")
+ 
+ 
+def main():
+    print("=== Iris Flower Classifier ===")
+ 
+    # Step 1: Load the data
+    data = load_data()
+ 
+    # Step 2: Split into training data (80%) and testing data (20%)
+    X_train, X_test, y_train, y_test = train_test_split(
+        data.data, data.target, test_size=0.2, random_state=42
+    )
+ 
+   
